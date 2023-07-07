@@ -1,19 +1,11 @@
+import LoadSession from "@/components/LoadSession";
+import { cookies } from "next/dist/client/components/headers";
+
 export default async function Page() {
-  const data = await setCount();
   return (
     <div>
+      <LoadSession hasCookie={cookies().has("mysession")} />
       <h1>Hello world!</h1>
-      <p>Response: {data.count}</p>
     </div>
   );
-}
-
-async function setCount() {
-  const response = await fetch("http://localhost:3000/api", {
-    method: "POST",
-    cache: "no-cache",
-    credentials: "include",
-  });
-
-  return response.json();
 }

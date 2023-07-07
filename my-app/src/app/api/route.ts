@@ -6,9 +6,10 @@ export async function POST() {
     cache: "no-cache",
   });
 
-  const data = await apiResponse.json();
+  const sessionCookie = apiResponse.headers.getSetCookie()[0];
+  let response = NextResponse.json(null);
 
-  const response = NextResponse.json(data);
+  response.headers.set("Set-Cookie", sessionCookie);
 
   return response;
 }
