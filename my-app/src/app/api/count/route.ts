@@ -1,18 +1,22 @@
 import { cookies } from "next/dist/client/components/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const apiResponse = await fetch("http://localhost:8080/get", {
-    method: "GET",
-    cache: "no-cache",
-    headers: {
-      Cookie: `mysession=${cookies().get("mysession")?.value}`,
-    },
-  });
+export async function GET() {
+  let data = { token: "balls" };
 
-  const apiData = await apiResponse.json();
+  if (cookies().has("mysession")) {
+    const apiResponse = await fetch("http://localhost:8080/get", {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        Cookie: `mysession=${cookies().get("mysession")?.value}`,
+      },
+    });
 
-  const response = NextResponse.json(apiData);
+    data = await apiResponse.json();
+  }
+
+  const response = NextResponse.json(data);
 
   return response;
 }
