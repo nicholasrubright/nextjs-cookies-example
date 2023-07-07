@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function POST() {
-  const apiResponse = await fetch("http://localhost:8080/balls/set", {
+  const apiResponse = await fetch("http://localhost:8080/set", {
     method: "POST",
     cache: "no-cache",
   });
