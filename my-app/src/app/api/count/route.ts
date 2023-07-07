@@ -7,7 +7,7 @@ export async function GET() {
   const sessionCookie = cookies().get("mysession")?.value;
 
   if (sessionCookie) {
-    const apiResponse = await fetch("http://localhost:8080/get", {
+    const apiResponse = await fetch("http://localhost:8080/api/get", {
       method: "GET",
       cache: "no-cache",
       headers: {

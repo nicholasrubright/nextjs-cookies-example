@@ -31,6 +31,8 @@ func GetTokenFromSession(session sessions.Session) (string, error)  {
 
 func SessionMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		fmt.Println("session middleware being used")
 		session := sessions.Default(c)
 
 		sessionToken, err := GetTokenFromSession(session)
@@ -43,6 +45,51 @@ func SessionMiddleware() gin.HandlerFunc {
 
 		c.Next()
 	}
+}
+
+
+func setRoutes(apiRoutes *gin.RouterGroup) {
+
+
+	apiRoutes.GET("/get", func(c *gin.Context) {
+	
+		fmt.Println(c.Request.Header)
+
+		cookie, err := c.Cookie("mysession")
+
+		if err != nil {
+			fmt.Println("NO COOKIE FOUND ON REQUEST: ", err)
+		} else {
+			fmt.Println("COOKEI HAS BEEN FOUND ON REQUET: ", cookie)
+		}
+
+		session := sessions.Default(c)
+
+		token, err := GetTokenFromSession(session)
+
+		if err != nil {
+			panic("balls")
+		}
+
+		c.JSON(200, gin.H{"token": token})
+	})
+
+	apiRoutes.POST("/set", func(c *gin.Context) {
+		session := sessions.Default(c)
+
+		var token string
+		v := session.Get("token")
+		if v == nil {
+			token = "BIG FUCKING TOKEN AAAAHHH"
+		} else {
+			token = v.(string)
+		}
+
+		SetTokenInSession(session, token)
+
+		c.JSON(200, gin.H{"token": token})
+	})
+
 }
 
 
@@ -62,46 +109,7 @@ func main() {
 	apiRoutes := router.Group("/api")
 
 	apiRoutes.Use(SessionMiddleware())
-	{
-		router.POST("/set", func(c *gin.Context) {
-			session := sessions.Default(c)
-	
-			var token string
-			v := session.Get("token")
-			if v == nil {
-				token = "BIG FUCKING TOKEN AAAAHHH"
-			} else {
-				token = v.(string)
-			}
-	
-			SetTokenInSession(session, token)
-	
-			c.JSON(200, gin.H{"token": token})
-		})
-	
-		router.GET("/get", func(c *gin.Context) {
-	
-			fmt.Println(c.Request.Header)
-	
-			cookie, err := c.Cookie("mysession")
-	
-			if err != nil {
-				fmt.Println("NO COOKIE FOUND ON REQUEST: ", err)
-			} else {
-				fmt.Println("COOKEI HAS BEEN FOUND ON REQUET: ", cookie)
-			}
-	
-			session := sessions.Default(c)
-	
-			token, err := GetTokenFromSession(session)
-	
-			if err != nil {
-				panic("balls")
-			}
-	
-			c.JSON(200, gin.H{"token": token})
-		})
-	}
+	setRoutes(apiRoutes)
 
 
 	router.Run(":8080")
