@@ -1,4 +1,3 @@
-import LoadSession from "@/components/LoadSession";
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });

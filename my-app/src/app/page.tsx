@@ -1,5 +1,5 @@
 import LoadSession from "@/components/LoadSession";
-import { cookies } from "next/dist/client/components/headers";
+import { cookies } from "next/headers";
 
 export default async function Page() {
   return (

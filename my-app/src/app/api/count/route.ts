@@ -1,10 +1,12 @@
-import { cookies } from "next/dist/client/components/headers";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   let data = { token: "balls" };
 
-  if (cookies().has("mysession")) {
+  const sessionCookie = cookies().get("mysession")?.value;
+
+  if (sessionCookie) {
     const apiResponse = await fetch("http://localhost:8080/get", {
       method: "GET",
       cache: "no-cache",
