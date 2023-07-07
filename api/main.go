@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/gin-contrib/sessions"
-  	"github.com/gin-contrib/sessions/cookie"
-  	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -37,6 +39,15 @@ func main() {
 	})
 
 	router.GET("/get", func(c *gin.Context) {
+
+		cookie, err := c.Cookie("mysession")
+
+		if err != nil {
+			fmt.Println("NO COOKIE FOUND ON REQUEST: ", err)
+		} else {
+			fmt.Println("COOKEI HAS BEEN FOUND ON REQUET: ", cookie)
+		}
+
 		session := sessions.Default(c)
 
 		var count int
