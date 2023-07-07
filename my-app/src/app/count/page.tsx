@@ -8,13 +8,13 @@ export default async function Page() {
   if (response.ok) {
     data = await response.json();
   } else {
-    data = { count: "balls" };
+    data = { token: "balls" };
   }
 
   return (
     <div>
       <h1>Count Page!</h1>
-      <p>Count: {data.count}</p>
+      <p>Count: {data.token}</p>
     </div>
   );
 }

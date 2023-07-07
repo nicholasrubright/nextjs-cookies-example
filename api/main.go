@@ -24,18 +24,18 @@ func main() {
 	router.POST("/set", func(c *gin.Context) {
 		session := sessions.Default(c)
 
-		var count int
-		v := session.Get("count")
+		var token string
+		v := session.Get("token")
 		if v == nil {
-			count = 69
+			token = "BIG FUCKING TOKEN AAAAHHH"
 		} else {
-			count = v.(int)
+			token = v.(string)
 		}
 
-		session.Set("count", count)
+		session.Set("token", token)
 		session.Save()
 
-		c.JSON(200, gin.H{"count": count})
+		c.JSON(200, gin.H{"token": token})
 	})
 
 	router.GET("/get", func(c *gin.Context) {
@@ -52,15 +52,15 @@ func main() {
 
 		session := sessions.Default(c)
 
-		var count int
-		v := session.Get("count")
+		var token string
+		v := session.Get("token")
 		if v == nil {
-			count = 0
+			token = "penis"
 		} else {
-			count = v.(int)
+			token = v.(string)
 		}
 
-		c.JSON(200, gin.H{"count": count})
+		c.JSON(200, gin.H{"token": token})
 	})
 
 	router.Run(":8080")
