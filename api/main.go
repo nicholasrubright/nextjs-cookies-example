@@ -40,6 +40,8 @@ func main() {
 
 	router.GET("/get", func(c *gin.Context) {
 
+		fmt.Println(c.Request.Header)
+
 		cookie, err := c.Cookie("mysession")
 
 		if err != nil {
